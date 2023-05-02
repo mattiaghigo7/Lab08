@@ -51,6 +51,7 @@ public class FXMLController {
     	//numero archi
     	this.txtResult.appendText("Il grafo ha "+grafo.edgeSet().size()+" archi\n");
     	//elenco archi con relativa distanza
+    	this.txtResult.appendText("Lista degli archi: \n");
     	for(DefaultWeightedEdge e : grafo.edgeSet()) {
     		this.txtResult.appendText(e.toString()+" con distanza: "+ grafo.getEdgeWeight(e)+"\n");
     	}
