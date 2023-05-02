@@ -95,21 +95,21 @@ public class ExtFlightDelaysDAO {
 	}
 	
 	public List<CoppiaA> getCoppie(Map<Integer,Airport> aeroportiIdMap, double distanzaRichiesta){
-		String sql = "SELECT f.ORIGIN_AIRPORT_ID, f.DESTINATION_AIRPORT_ID, AVG(f.DISTANCE) AS A "
+		String sql = "SELECT f.ORIGIN_AIRPORT_ID,f.DESTINATION_AIRPORT_ID,AVG(f.DISTANCE) AS A "
 				+ "FROM flights f "
-				+ "GROUP BY f.ORIGIN_AIRPORT_ID, f.DESTINATION_AIRPORT_ID";
+				+ "GROUP BY f.ORIGIN_AIRPORT_ID,f.DESTINATION_AIRPORT_ID "
+				+ "HAVING A>?";
 		List<CoppiaA> result = new LinkedList<>();
 
 		try {
 			Connection conn = ConnectDB.getConnection();
 			PreparedStatement st = conn.prepareStatement(sql);
+			st.setDouble(1, distanzaRichiesta);
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next()) {
-				if(rs.getDouble("A")>=distanzaRichiesta) {
 					CoppiaA coppia = new CoppiaA(aeroportiIdMap.get(rs.getInt("f.ORIGIN_AIRPORT_ID")),aeroportiIdMap.get(rs.getInt("f.DESTINATION_AIRPORT_ID")),rs.getDouble("A"));
 					result.add(coppia);
-				}
 			}
 
 			conn.close();

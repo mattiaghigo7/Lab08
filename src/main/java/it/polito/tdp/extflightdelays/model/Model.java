@@ -8,6 +8,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import it.polito.tdp.extflightdelays.db.ExtFlightDelaysDAO;
 
@@ -44,8 +45,13 @@ public class Model {
 		
 		//aggiungo archi
 		for(CoppiaA c : coppie) {
-				grafo.addEdge(c.getPartenza(), c.getDestinazione());
-				grafo.setEdgeWeight(c.getPartenza(), c.getDestinazione(), c.getDistanza());
+			DefaultWeightedEdge e = grafo.getEdge(c.getPartenza(), c.getDestinazione());
+			if(!grafo.containsEdge(e)) {
+				Graphs.addEdge(grafo,c.getPartenza(), c.getDestinazione(),c.getDistanza());
+			} else {
+				double peso = (grafo.getEdgeWeight(e)+c.getDistanza())/2;
+				grafo.setEdgeWeight(e, peso);
+			}
 		}
 		
 //		System.out.println("Grafo creato con "+grafo.vertexSet().size()+" vertici e "+grafo.edgeSet().size()+" archi");

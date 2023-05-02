@@ -9,9 +9,10 @@ public class TestModel {
 		
 		Model model = new Model();
 
-		Graph<Airport,DefaultWeightedEdge> grafo = model.creaGrafo(0);
+		Graph<Airport,DefaultWeightedEdge> grafo = model.creaGrafo(400);
 		
 		System.out.println("Grafo creato con "+grafo.vertexSet().size()+" vertici e "+grafo.edgeSet().size()+" archi");
+		System.out.println(grafo.edgeSet());
 	}
 
 }
